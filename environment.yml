@@ -1,0 +1,12 @@
+name: data_exfil
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - opencv
+  - qrcode
+  - numpy
+  - icecream
+  - pillow
+  - pytest
