@@ -1,9 +1,10 @@
-from qr_tx.encoding import QRDecoder, DecodeResult
-import cv2
-import base64
-from pathlib import Path
-
 import argparse
+from pathlib import Path
+from typing import Optional
+
+import cv2
+
+from qr_tx.encoding import QRDecoder
 
 
 def decode_qr_data(p: Path):
@@ -15,9 +16,8 @@ def decode_qr_data(p: Path):
         success, img = vidcap.read()
         if success:
             decoder.decode_qr_img(img)
-            if count % 10 == 0 and False:
-                cv2.imshow("test", img)
-                cv2.waitKey(200)
+            if count % 100 == 0:
+                print(f"Frame: {count}")
             count += 1
         else:
             break
@@ -26,12 +26,12 @@ def decode_qr_data(p: Path):
     return decoder.get_data()
 
 
-def handle_result(res: DecodeResult, out: Path):
-    if res.missing_frames is not None:
-        print(f"Missing Frames:\n{res.missing_frames}")
+def handle_result(res: Optional[bytes], out: Path):
+    if res is None:
+        print(f"Unable to decode")
     else:
         with out.open("wb") as f:
-            f.write(res.data)
+            f.write(res)
 
 
 if __name__ == "__main__":

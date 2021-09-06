@@ -6,3 +6,5 @@ __pycache__
 *.mp4
 *.avi
 *.m4v
+*.txt
+.DS_Store

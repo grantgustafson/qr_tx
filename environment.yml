@@ -10,3 +10,5 @@ dependencies:
   - icecream
   - pillow
   - pytest
+  - pyzbar
+  - crc32c

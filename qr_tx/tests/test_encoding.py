@@ -1,16 +1,20 @@
-from qr_exfil.encoding import FrameData, QRDecoder, QREncoder
 import random
 import string
+
 from PIL import Image
+
+from qr_tx.encoding import FrameData, QRDecoder, QREncoder
 
 
 def test_frame_data():
-    data = "some test data".encode("utf-8")
-    ser_frame = FrameData(1, 1, data).encode()
+    data = "some test data"
+    ser_frame = FrameData(1, 2, 3, 4, data).encode()
     print(ser_frame)
     deser_frame = FrameData.decode(ser_frame)
-    assert deser_frame.seq == 1
-    assert deser_frame.total_frames == 1
+    assert deser_frame.idx == 1
+    assert deser_frame.degree == 2
+    assert deser_frame.n_blocks == 3
+    assert deser_frame.n_total_bytes == 4
     assert deser_frame.data == data
 
 
@@ -35,12 +39,15 @@ def test_single_frame():
 
 
 def test_qr_encoding_decoding():
-    data = "".join(random.choice(string.ascii_letters) for _ in range(2000)).encode(
+    data = "".join(random.choice(string.ascii_letters) for _ in range(8000)).encode(
         "utf-8"
     )
+    data = open("/Users/grantgustafson/data_exfil/rand.txt", "rb").read()[:10000]
     encoder = QREncoder(data)
     decoder = QRDecoder()
-    for i, frame in enumerate(encoder.qr_imgs()):
+    for i, frame in enumerate(encoder.encode_qr_stream()):
         print(f"Frame: {i}")
         decoder.decode_qr_img(frame)
-    print(decoder.get_data())
+    res = decoder.get_data()
+    assert res is not None
+    assert res == data
