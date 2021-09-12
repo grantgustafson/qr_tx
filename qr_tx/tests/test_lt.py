@@ -15,28 +15,21 @@ def test_robust_distribution():
     ), "Not a std distribution"
 
 
-def test_get_block_degrees():
-    res = get_block_degrees(10, 20)
-    print(res)
-
-
 def test_encode_decode():
     data = "".join(random.choice(string.ascii_letters) for _ in range(2000)).encode(
         "utf-8"
     )
-    symbols = encode(data, 24, 2.0)
+    symbols = encode(data, 24, 3.0)
     decoded = decode(symbols)
     assert decoded == data
 
 
 def test_encode_decode_data_loss():
     data_sz = 200000
-
     data = "".join(random.choice(string.ascii_letters) for _ in range(data_sz)).encode(
         "utf-8"
     )
-    symbols = encode(data, 64, 1.8)
-    print(f"using {len(symbols)} symbols")
-    symbols = random.sample(symbols, int(len(symbols) * 0.91))
+    symbols = encode(data, 64, 2.5)
+    symbols = random.sample(symbols, int(len(symbols) * 0.95))
     decoded = decode(symbols)
     assert decoded == data

@@ -1,14 +1,13 @@
-name: data_exfil
+name: qr_tx
 channels:
   - defaults
   - conda-forge
 dependencies:
   - python=3.9
-  - opencv
-  - qrcode
-  - numpy
-  - icecream
-  - pillow
+  - opencv=4.5.3
+  - qrcode=7.3
+  - numpy=1.20.3
+  - pillow=8.3.1
   - pytest
-  - pyzbar
-  - crc32c
+  - pyzbar=0.1.8
+  - crc32c=2.2
